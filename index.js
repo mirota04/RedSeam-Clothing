@@ -1,9 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import env from 'dotenv';
+import session from 'express-session';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 const API_URL = process.env.API_URL;
 const saltRounds = 10;
 env.config();
@@ -25,8 +26,10 @@ app.use(session({
   cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }
 }));
 
+app.get('/', (req, res) => {
+    res.render('home.ejs');
+});;
 
-
-app.listen(port, () => {
-    console.log(`Server runnig on port ${port}.`);
+app.listen(PORT, () => {
+    console.log(`Server runnig on port ${PORT}.`);
 });
