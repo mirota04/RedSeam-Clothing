@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/images/Logo.png">
+    <title>RedSeam Clothing - Log in</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="/styles/login.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10151F',
+                        secondary: '#3E424A',
+                        grey: '#F8F6F7',
+                        white: '#FFFFFF',
+                        red: '#FF4000'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-poppins">
+    <%- include('partials/headerNotLogin') %>
+    
+    <div class="flex min-h-screen">
+        <!-- Left Section - Image -->
+        <div class="w-1/2 relative">
+            <img src="/images/LoginImage.png" alt="RedSeam Lifestyle" class="w-full object-cover">
+        </div>
+        
+        <!-- Right Section - Login Form -->
+        <div class="w-1/2 bg-white relative">
+            <!-- Log in Title -->
+            <h1 class="absolute font-semibold text-primary" style="top: calc(321px - 80px); left: calc(1121px - 50vw); font-size: 42px;">Log in</h1>
+            
+            <!-- Email Field -->
+            <div class="absolute" style="top: calc(432px - 80px); left: calc(1121px - 50vw);">
+                <div class="relative">
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required
+                        class="w-[554px] h-[42px] px-4 border rounded-sm focus:outline-none focus:ring-2 focus:ring-red focus:border-transparent"
+                        style="color: #6B7280; border-color: #E1DFE1;"
+                    >
+                    <span class="absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                        <span class="text-gray-500">Email</span>
+                        <span class="text-red"> *</span>
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Password Field -->
+            <div class="absolute" style="top: calc(504px - 80px); left: calc(1121px - 50vw);">
+                <div class="relative">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required
+                        class="w-[554px] h-[42px] px-4 border rounded-sm focus:outline-none focus:ring-2 focus:ring-red focus:border-transparent pr-12"
+                        style="color: #6B7280; border-color: #E1DFE1;"
+                    >
+                    <span class="absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                        <span class="text-gray-500">Password</span>
+                        <span class="text-red"> *</span>
+                    </span>
+                    <button 
+                        type="button" 
+                        onclick="togglePassword()"
+                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary"
+                    >
+                        <i class="ri-eye-line text-xl" id="eyeIcon"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Login Button and Register Link Container -->
+            <div class="absolute flex flex-col" style="top: calc(598px - 80px); left: calc(1121px - 50vw); width: 554px; gap: 24px;">
+                <!-- Login Button -->
+                <button 
+                    type="submit" 
+                    class="bg-red text-white h-[42px] px-6 rounded-button hover:bg-red/90 transition-colors duration-200"
+                    style="font-size: 14px;"
+                >
+                    Log in
+                </button>
+                
+                <!-- Register Link -->
+                <div class="text-center" style="font-size: 14px;">
+                    <span class="text-secondary">Not a member? </span>
+                    <a href="/register" class="text-red hover:underline">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/scripts/login.js"></script>
+</body>
+</html>

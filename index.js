@@ -28,7 +28,11 @@ app.use(session({
 
 app.get('/', (req, res) => {
     res.render('home.ejs');
-});;
+});
+
+app.get('/login', (req, res) => {
+    res.render('login.ejs');
+});
 
 app.listen(PORT, () => {
     console.log(`Server runnig on port ${PORT}.`);

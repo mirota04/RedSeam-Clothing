@@ -1,0 +1,14 @@
+/* Login page specific styles */
+.placeholder-red::placeholder {
+    color: #FF4000;
+}
+
+.placeholder-red::placeholder::before {
+    content: "Email ";
+    color: #6B7280;
+}
+
+.placeholder-red::placeholder::after {
+    content: " *";
+    color: #FF4000;
+}
