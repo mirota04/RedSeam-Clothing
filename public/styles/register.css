@@ -1,0 +1,25 @@
+/* Reuse login floating label styles by importing via a CSS preprocessor would be ideal,
+   but for now we mirror the minimal rules to keep identical behavior */
+
+.form-field { position: relative; }
+.floating-label { position: absolute; left:16px; top:50%; transform: translateY(-50%); transition: opacity 200ms ease; pointer-events:none; display:inline-flex; align-items:center; gap:4px; opacity:1; }
+.floating-label .asterisk { color:#FF4000; }
+.form-field.focused .floating-label, .form-field.filled .floating-label { opacity:0; }
+
+/* Autofill cleanup */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active { -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset !important; box-shadow: 0 0 0px 1000px #FFFFFF inset !important; -webkit-text-fill-color:#6B7280 !important; caret-color:#6B7280 !important; }
+
+/* Avatar uploader */
+.avatar-row { width: 554px; }
+.avatar-box { border: none; border-radius: 8px; background-color: #FFFFFF; display: flex; align-items: center; justify-content: space-between; }
+.avatar-left { display: flex; align-items: center; gap: 16px; }
+.avatar-circle { width: 80px; height: 80px; border-radius: 9999px; background-color: #FFFFFF; border: 1px solid #E1DFE1; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+.avatar-actions { display: flex; align-items: center; gap: 16px; font-size: 14px; }
+.avatar-actions button { color: #3E424A; }
+.avatar-right { display: flex; align-items: center; gap: 12px; color: #3E424A; }
+.avatar-upload-btn { width: 84px; height: 84px; border-radius: 9999px; border: 1px solid #E1DFE1; background: #FFFFFF; display: flex; align-items: center; justify-content: center; }
+

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/images/Logo.png">
+    <title>RedSeam Clothing - Registration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="/styles/register.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10151F',
+                        secondary: '#3E424A',
+                        grey: '#F8F6F7',
+                        white: '#FFFFFF',
+                        red: '#FF4000'
+                    },
+                    borderRadius: {
+                        'button': '8px'
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Keep layout parity with login page for exact alignment */
+    </style>
+    
+</head>
+<body class="font-poppins">
+    <%- include('partials/headerNotLogin') %>
+    
+    <div class="flex min-h-screen">
+        <!-- Left Section - Image -->
+        <div class="w-1/2 relative">
+            <img src="/images/LoginImage.png" alt="RedSeam Lifestyle" class="w-full object-cover">
+        </div>
+        
+        <!-- Right Section - Register Form -->
+        <div class="w-1/2 bg-white relative">
+            <!-- Title -->
+            <h1 class="absolute font-semibold text-primary" style="top: calc(218px - 80px); left: calc(1121px - 50vw); font-size: 42px;">Registration</h1>
+
+            <!-- Avatar Upload Row (optional visual space like in design) -->
+            <div class="absolute avatar-row" style="top: calc(326px - 80px); left: calc(1121px - 50vw);">
+                <div id="avatarUploadBox" class="avatar-box" style="display: flex;">
+                    <div class="avatar-right">
+                        <button id="avatarUploadTrigger" type="button" class="avatar-upload-btn">
+                            <i class="ri-camera-line text-2xl"></i>
+                        </button>
+                        <span>Upload image</span>
+                    </div>
+                    <input id="avatarInput" type="file" accept="image/*" class="hidden">
+                </div>
+
+                <div id="avatarUploadedBox" class="avatar-box uploaded" style="display: none;">
+                    <div class="avatar-left">
+                        <div class="avatar-circle">
+                            <img id="avatarPreviewImg" alt="Avatar preview">
+                        </div>
+                        <div class="avatar-actions">
+                            <button id="avatarUploadTrigger2" type="button" class="hover:underline">Upload new</button>
+                            <button id="avatarRemoveBtn" type="button" class="hover:underline">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Username Field -->
+            <div class="absolute form-field" style="top: calc(444px - 80px); left: calc(1121px - 50vw);">
+                <div class="relative">
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        required
+                        autocomplete="off"
+                        class="w-[554px] h-[42px] px-4 border rounded-button focus:outline-none focus:ring-1 focus:ring-red focus:border-transparent"
+                        style="color: #6B7280; border-color: #E1DFE1;"
+                    >
+                    <span class="floating-label"><span class="text-gray-500">Username</span><span class="asterisk">*</span></span>
+                </div>
+            </div>
+
+            <!-- Email Field -->
+            <div class="absolute form-field" style="top: calc(516px - 80px); left: calc(1121px - 50vw);">
+                <div class="relative">
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required
+                        autocomplete="off"
+                        class="w-[554px] h-[42px] px-4 border rounded-button focus:outline-none focus:ring-1 focus:ring-red focus:border-transparent"
+                        style="color: #6B7280; border-color: #E1DFE1;"
+                    >
+                    <span class="floating-label"><span class="text-gray-500">Email</span><span class="asterisk">*</span></span>
+                </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="absolute form-field" style="top: calc(588px - 80px); left: calc(1121px - 50vw);">
+                <div class="relative">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required
+                        autocomplete="new-password"
+                        class="w-[554px] h-[42px] px-4 border rounded-button focus:outline-none focus:ring-1 focus:ring-red focus:border-transparent pr-12"
+                        style="color: #6B7280; border-color: #E1DFE1;"
+                    >
+                    <span class="floating-label"><span class="text-gray-500">Password</span><span class="asterisk">*</span></span>
+                    <button type="button" onclick="togglePassword('password','eyeIcon')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary">
+                        <i class="ri-eye-line text-xl" id="eyeIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div class="absolute form-field" style="top: calc(660px - 80px); left: calc(1121px - 50vw);">
+                <div class="relative">
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        required
+                        autocomplete="new-password"
+                        class="w-[554px] h-[42px] px-4 border rounded-button focus:outline-none focus:ring-1 focus:ring-red focus:border-transparent pr-12"
+                        style="color: #6B7280; border-color: #E1DFE1;"
+                    >
+                    <span class="floating-label"><span class="text-gray-500">Confirm password</span><span class="asterisk">*</span></span>
+                    <button type="button" onclick="togglePassword('confirmPassword','eyeIcon2')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary">
+                        <i class="ri-eye-line text-xl" id="eyeIcon2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Register Button and Login Link -->
+            <div class="absolute flex flex-col" style="top: calc(754px - 80px); left: calc(1121px - 50vw); width: 554px; gap: 24px;">
+                <button type="submit" class="bg-red text-white h-[42px] px-6 rounded-button hover:bg-red/90 transition-colors duration-200" style="font-size: 14px;">Register</button>
+                <div class="text-center" style="font-size: 14px;">
+                    <span class="text-secondary">Already member? </span>
+                    <a href="/login" class="text-red hover:underline">Log in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/scripts/register.js"></script>
+</body>
+</html>
+
+
