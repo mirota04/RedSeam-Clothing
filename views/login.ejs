@@ -57,37 +57,37 @@
             <h1 class="absolute font-semibold text-primary" style="top: calc(321px - 80px); left: calc(1121px - 50vw); font-size: 42px;">Log in</h1>
             
             <!-- Email Field -->
-            <div class="absolute" style="top: calc(432px - 80px); left: calc(1121px - 50vw);">
+            <div class="absolute form-field" style="top: calc(432px - 80px); left: calc(1121px - 50vw);">
                 <div class="relative">
                     <input 
                         type="email" 
                         id="email" 
                         name="email" 
                         required
-                        class="w-[554px] h-[42px] px-4 border rounded-sm focus:outline-none focus:ring-2 focus:ring-red focus:border-transparent"
+                        class="w-[554px] h-[42px] px-4 border rounded-sm focus:outline-none focus:ring-1 focus:ring-red focus:border-transparent"
                         style="color: #6B7280; border-color: #E1DFE1;"
                     >
-                    <span class="absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                    <span class="floating-label">
                         <span class="text-gray-500">Email</span>
-                        <span class="text-red"> *</span>
+                        <span class="asterisk">*</span>
                     </span>
                 </div>
             </div>
             
             <!-- Password Field -->
-            <div class="absolute" style="top: calc(504px - 80px); left: calc(1121px - 50vw);">
+            <div class="absolute form-field" style="top: calc(504px - 80px); left: calc(1121px - 50vw);">
                 <div class="relative">
                     <input 
                         type="password" 
                         id="password" 
                         name="password" 
                         required
-                        class="w-[554px] h-[42px] px-4 border rounded-sm focus:outline-none focus:ring-2 focus:ring-red focus:border-transparent pr-12"
+                        class="w-[554px] h-[42px] px-4 border rounded-sm focus:outline-none focus:ring-1 focus:ring-red focus:border-transparent pr-12"
                         style="color: #6B7280; border-color: #E1DFE1;"
                     >
-                    <span class="absolute left-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                    <span class="floating-label">
                         <span class="text-gray-500">Password</span>
-                        <span class="text-red"> *</span>
+                        <span class="asterisk">*</span>
                     </span>
                     <button 
                         type="button" 
