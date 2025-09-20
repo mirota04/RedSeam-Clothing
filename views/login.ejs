@@ -45,7 +45,7 @@
 <body class="font-poppins">
     <%- include('partials/headerNotLogin') %>
     
-    <div class="flex min-h-screen">
+    <form class="flex min-h-screen" action="/login" method="post">
         <!-- Left Section - Image -->
         <div class="w-1/2 relative">
             <img src="/images/LoginImage.png" alt="RedSeam Lifestyle" class="w-full object-cover">
@@ -53,6 +53,24 @@
         
         <!-- Right Section - Login Form -->
         <div class="w-1/2 bg-white relative">
+            <!-- Error Alert -->
+            <% if (typeof error !== 'undefined') { %>
+            <div class="absolute error-alert" style="top: calc(321px - 80px - 60px); left: calc(1121px - 50vw); width: 554px;">
+                <div class="error-content">
+                    <div class="error-icon">
+                        <i class="ri-error-warning-line"></i>
+                    </div>
+                    <div class="error-text">
+                        <div class="error-title">Login Failed</div>
+                        <div class="error-message"><%= error %></div>
+                    </div>
+                    <button class="error-close" onclick="this.parentElement.parentElement.style.display='none'">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+            </div>
+            <% } %>
+
             <!-- Log in Title -->
             <h1 class="absolute font-semibold text-primary" style="top: calc(321px - 80px); left: calc(1121px - 50vw); font-size: 42px;">Log in</h1>
             
@@ -117,7 +135,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 
     <script src="/scripts/login.js"></script>
 </body>

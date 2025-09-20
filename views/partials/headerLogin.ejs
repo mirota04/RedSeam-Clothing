@@ -10,15 +10,15 @@
             <i class="ri-shopping-cart-2-fill text-xl"></i>
         </button>
         
-        <!-- Profile Picture -->
-        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-red transition-colors duration-200 cursor-pointer">
-            <% if (typeof user !== 'undefined' && user.avatar) { %>
-                <img src="<%= user.avatar %>" alt="Profile" class="w-full h-full object-cover">
-            <% } else { %>
-                <div class="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <i class="ri-user-3-fill text-gray-500 text-lg"></i>
+                <!-- Profile Picture -->
+                <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-red transition-colors duration-200 cursor-pointer">
+                    <% if (typeof user !== 'undefined' && (user.profile_photo || user.avatar)) { %>
+                        <img src="<%= user.profile_photo || user.avatar %>" alt="Profile" class="w-full h-full object-cover">
+                    <% } else { %>
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <i class="ri-user-3-fill text-gray-500 text-lg"></i>
+                        </div>
+                    <% } %>
                 </div>
-            <% } %>
-        </div>
     </div>
 </header>

@@ -42,6 +42,53 @@ app.get('/login', (req, res) => {
     res.render('login.ejs');
 });
 
+// Handle login form submission
+app.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.render('login.ejs', { 
+        error: 'Email and password are required.',
+        errorType: 'validation'
+      });
+    }
+
+    const apiUrl = process.env.API_URL?.replace(/\/$/, '');
+    const url = `${apiUrl}/login`;
+    
+    const response = await axios.post(url, {
+      email,
+      password
+    }, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${yourBearerToken}`,
+      },
+    });
+
+    // On success, store user data in session
+    if (response?.data?.user) {
+      req.session.user = response.data.user;
+      req.session.token = response.data.token;
+    }
+    // Redirect to home page
+    res.redirect('/');
+  } catch (err) {
+    if (err.response) {
+      // Render login page with error message
+      const errorMessage = err.response.data?.message || err.response.data || 'Login failed';
+      return res.render('login.ejs', { 
+        error: errorMessage,
+        errorType: err.response.status === 401 ? 'auth' : 'error'
+      });
+    }
+    res.render('login.ejs', { 
+      error: 'Login failed. Please try again.',
+      errorType: 'error'
+    });
+  }
+});
+
 app.get('/register', (req, res) => {
     res.render('register.ejs');
 });
