@@ -2,6 +2,9 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import env from 'dotenv';
 import session from 'express-session';
+import multer from 'multer';
+import axios from 'axios';
+import FormData from 'form-data';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,6 +16,11 @@ const yourBearerToken = process.env.BEARER_TOKEN;
 const config = {
     headers: { Authorization: `Bearer ${yourBearerToken}` },
 };
+
+// Multer setup - avatar optional, limit ~2MB
+const upload = multer({
+  limits: { fileSize: 2 * 1024 * 1024 }
+});
 
 app.set('view engine', 'ejs');
 
@@ -27,7 +35,7 @@ app.use(session({
 }));
 
 app.get('/', (req, res) => {
-    res.render('home.ejs');
+    res.render('home.ejs', { user: req.session.user });
 });
 
 app.get('/login', (req, res) => {
@@ -36,6 +44,66 @@ app.get('/login', (req, res) => {
 
 app.get('/register', (req, res) => {
     res.render('register.ejs');
+});
+
+// Proxy registration to external API
+app.post('/register', upload.any(), async (req, res) => {
+  try {
+    const { username, email, password, password_confirmation } = req.body;
+    if (!username || !email || !password || !password_confirmation) {
+      return res.status(400).send('Missing required fields.');
+    }
+    if (password !== password_confirmation) {
+      return res.status(422).send('Passwords do not match.');
+    }
+
+    const form = new FormData();
+    form.append('username', username);
+    form.append('email', email);
+    form.append('password', password);
+    form.append('password_confirmation', password_confirmation);
+    
+    // Look for avatar file in any uploaded files
+    const avatarFile = req.files?.find(file => file.fieldname === 'avatar');
+    if (avatarFile) {
+      form.append('avatar', avatarFile.buffer, { 
+        filename: avatarFile.originalname, 
+        contentType: avatarFile.mimetype 
+      });
+    }
+
+    const apiUrl = process.env.API_URL?.replace(/\/$/, '');
+    const url = `${apiUrl}/register`;
+    
+    const response = await axios.post(url, form, {
+      headers: {
+        ...form.getHeaders(),
+        Accept: 'application/json',
+        Authorization: `Bearer ${yourBearerToken}`,
+      },
+    });
+
+    // On success, store user data in session
+    if (response?.data?.user) {
+      req.session.user = response.data.user;
+      req.session.token = response.data.token;
+    }
+    // Redirect to home or login as desired
+    res.redirect('/');
+  } catch (err) {
+    if (err.response) {
+      // Render register page with error message
+      const errorMessage = err.response.data?.message || err.response.data || 'Registration failed';
+      return res.render('register.ejs', { 
+        error: errorMessage,
+        errorType: err.response.status === 422 ? 'validation' : 'error'
+      });
+    }
+    res.render('register.ejs', { 
+      error: 'Registration failed. Please try again.',
+      errorType: 'error'
+    });
+  }
 });
 
 app.listen(PORT, () => {

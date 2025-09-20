@@ -1,0 +1,24 @@
+<header class="h-20 bg-white px-24 py-2.5 flex items-center justify-between">
+    <div class="flex items-center">
+        <a href="/" class="flex items-center">
+            <img src="/images/PageLogo.png" alt="RedSeam Logo" class="h-6">
+        </a>
+    </div>
+    <div class="flex items-center gap-4">
+        <!-- Cart Icon -->
+        <button class="flex items-center justify-center w-10 h-10 text-primary hover:text-red transition-colors duration-200">
+            <i class="ri-shopping-cart-2-fill text-xl"></i>
+        </button>
+        
+        <!-- Profile Picture -->
+        <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 hover:border-red transition-colors duration-200 cursor-pointer">
+            <% if (typeof user !== 'undefined' && user.avatar) { %>
+                <img src="<%= user.avatar %>" alt="Profile" class="w-full h-full object-cover">
+            <% } else { %>
+                <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <i class="ri-user-3-fill text-gray-500 text-lg"></i>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</header>

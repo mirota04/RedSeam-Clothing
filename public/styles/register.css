@@ -12,6 +12,75 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active { -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset !important; box-shadow: 0 0 0px 1000px #FFFFFF inset !important; -webkit-text-fill-color:#6B7280 !important; caret-color:#6B7280 !important; }
 
+/* Error Alert Styles */
+.error-alert {
+    z-index: 10;
+    animation: slideDown 0.3s ease-out;
+}
+
+.error-content {
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.error-icon {
+    color: #DC2626;
+    font-size: 20px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.error-text {
+    flex: 1;
+}
+
+.error-title {
+    font-weight: 600;
+    color: #DC2626;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.error-message {
+    color: #7F1D1D;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.error-close {
+    background: none;
+    border: none;
+    color: #9CA3AF;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.error-close:hover {
+    color: #6B7280;
+    background: #F3F4F6;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Avatar uploader */
 .avatar-row { width: 554px; }
 .avatar-box { border: none; border-radius: 8px; background-color: #FFFFFF; display: flex; align-items: center; justify-content: space-between; }

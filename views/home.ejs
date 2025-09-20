@@ -42,7 +42,11 @@
     </script>
 </head>
 <body class="font-poppins bg-grey text-secondary">
-    <%- include('partials/headerNotLogin') %>
+    <% if (typeof user !== 'undefined' && user) { %>
+        <%- include('partials/headerLogin') %>
+    <% } else { %>
+        <%- include('partials/headerNotLogin') %>
+    <% } %>
     
 </body>
 </html>
