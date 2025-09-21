@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="/styles/home.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -41,12 +42,128 @@
         }
     </script>
 </head>
-<body class="font-poppins bg-grey text-secondary">
+<body class="font-poppins bg-white text-secondary">
     <% if (typeof user !== 'undefined' && user) { %>
         <%- include('partials/headerLogin') %>
     <% } else { %>
         <%- include('partials/headerNotLogin') %>
     <% } %>
     
+    <!-- Products Section -->
+    <div class="px-24" style="margin-top: 72px;">
+        <div class="flex items-center justify-between">
+            <!-- Products Title -->
+            <h2 class="font-semibold text-primary" style="font-size: 42px;">Products</h2>
+            
+            <!-- Filter and Sort Controls -->
+            <div class="flex items-center">
+                <!-- Results Count -->
+                <span class="text-secondary" style="font-size: 12px;">Showing 1-10 of 100 results</span>
+                
+                <!-- 32px gap -->
+                <div style="width: 32px;"></div>
+                
+                <!-- Vertical Line -->
+                <div class="bg-secondary" style="width: 1px; height: 14px;"></div>
+                
+                <!-- 32px gap -->
+                <div style="width: 32px;"></div>
+                
+                <!-- Filter Button -->
+                <div class="relative">
+                    <button id="filterButton" class="flex items-center gap-2 text-secondary hover:text-primary transition-colors duration-200" style="font-size: 16px;">
+                        <i class="ri-equalizer-fill text-lg"></i>
+                        <span>Filter</span>
+                    </button>
+                    
+                    <!-- Filter Dropdown -->
+                    <div id="filterDropdown" class="absolute top-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 hidden" style="width: 392px; height: 169px; padding: 16px; border-radius: 8px; right: -16px;">
+                        <div class="h-full flex flex-col">
+                            <!-- Title -->
+                            <h3 class="font-semibold text-primary mb-4" style="font-size: 16px;">Select price</h3>
+                            
+                            <!-- Price Input Fields -->
+                            <div class="flex gap-2.5">
+                                <!-- From Field -->
+                                <div class="form-field flex-1">
+                                    <div class="relative">
+                                        <input 
+                                            type="number" 
+                                            id="priceFrom" 
+                                            placeholder=""
+                                            class="w-full h-10 px-4 border rounded-button focus:outline-none focus:ring-1 focus:ring-red focus:border-transparent"
+                                            style="color: #6B7280; border-color: #E1DFE1;"
+                                        >
+                                        <span class="floating-label">
+                                            <span class="text-gray-500">From</span>
+                                            <span class="asterisk">*</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <!-- To Field -->
+                                <div class="form-field flex-1">
+                                    <div class="relative">
+                                        <input 
+                                            type="number" 
+                                            id="priceTo" 
+                                            placeholder=""
+                                            class="w-full h-10 px-4 border rounded-button focus:outline-none focus:ring-1 focus:ring-red focus:border-transparent"
+                                            style="color: #6B7280; border-color: #E1DFE1;"
+                                        >
+                                        <span class="floating-label">
+                                            <span class="text-gray-500">To</span>
+                                            <span class="asterisk">*</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Apply Button -->
+                            <div class="flex justify-end" style="margin-top: 10px;">
+                                <button class="bg-red text-white rounded-button hover:bg-red/90 transition-colors duration-200" style="width: 124px; height: 41px; font-size: 16px;">
+                                    Apply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 32px gap -->
+                <div style="width: 32px;"></div>
+                
+                <!-- Sort Dropdown -->
+                <div class="relative">
+                    <button id="sortButton" class="flex items-center gap-2 text-secondary hover:text-primary transition-colors duration-200" style="font-size: 16px;">
+                        <span>Sort by</span>
+                        <i class="ri-arrow-down-s-line text-sm"></i>
+                    </button>
+                    
+                    <!-- Sort Dropdown -->
+                    <div id="sortDropdown" class="absolute top-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 hidden" style="width: 223px; height: 184px; padding: 16px; border-radius: 8px; right: 0;">
+                        <div class="h-full flex flex-col">
+                            <!-- Title -->
+                            <h3 class="font-semibold text-primary mb-2" style="font-size: 16px;">Sort by</h3>
+                            
+                            <!-- Sort Options -->
+                            <div class="flex-1 flex flex-col">
+                                <button class="text-left text-secondary hover:text-primary transition-colors duration-200 py-2" style="font-size: 16px;">
+                                    New products first
+                                </button>
+                                <button class="text-left text-secondary hover:text-primary transition-colors duration-200 py-2" style="font-size: 16px;">
+                                    Price, low to high
+                                </button>
+                                <button class="text-left text-secondary hover:text-primary transition-colors duration-200 py-2" style="font-size: 16px;">
+                                    Price, high to low
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/scripts/home.js"></script>
 </body>
 </html>

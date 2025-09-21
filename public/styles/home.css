@@ -1,0 +1,40 @@
+/* Home page specific styles */
+
+/* Floating label base */
+.form-field {
+    position: relative;
+}
+
+.floating-label {
+    position: absolute;
+    left: 16px; /* matches px-4 */
+    top: 50%;
+    transform: translateY(-50%);
+    transition: opacity 200ms ease;
+    pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 1;
+}
+
+.floating-label .asterisk {
+    color: #FF4000;
+}
+
+/* On focus or filled, float the label */
+.form-field.focused .floating-label,
+.form-field.filled .floating-label {
+    opacity: 0;
+}
+
+/* Tweak Chrome's autofill background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset !important;
+    box-shadow: 0 0 0px 1000px #FFFFFF inset !important;
+    -webkit-text-fill-color: #6B7280 !important;
+    caret-color: #6B7280 !important;
+}
