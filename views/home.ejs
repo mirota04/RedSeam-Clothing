@@ -172,8 +172,44 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Filter and Sort Bubbles -->
+        <% if (typeof filters !== 'undefined' && ((filters.priceFrom || filters.priceTo) || filters.sort)) { %>
+        <div class="filter-bubble-container" style="margin-top: 19px; display: flex; gap: 12px;">
+            <!-- Price Filter Bubble -->
+            <% if (filters.priceFrom || filters.priceTo) { %>
+            <div class="filter-bubble">
+                <span class="filter-text">
+                    Price: <%= filters.priceFrom || '0' %>-<%= filters.priceTo || '∞' %>
+                </span>
+                <button class="filter-remove" onclick="removePriceFilter()">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <% } %>
+            
+            <!-- Sort Bubble -->
+            <% if (filters.sort) { %>
+            <div class="filter-bubble">
+                <span class="filter-text">
+                    <% if (filters.sort === 'created_at') { %>
+                        New products first
+                    <% } else if (filters.sort === 'price' && filters.sortOrder === 'desc') { %>
+                        Price, high to low
+                    <% } else if (filters.sort === 'price') { %>
+                        Price, low to high
+                    <% } %>
+                </span>
+                <button class="filter-remove" onclick="removeSortFilter()">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+            <% } %>
+        </div>
+        <% } %>
+        
         <!-- Products Grid -->
-        <div class="products-grid" style="margin-top: 32px;">
+        <div class="products-grid" style="margin-top: 26px;">
             <% if (typeof products !== 'undefined' && products.length > 0) { %>
                 <% products.forEach(function(product) { %>
                     <div class="product-card">

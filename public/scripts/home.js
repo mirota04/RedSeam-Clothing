@@ -44,14 +44,14 @@ document.addEventListener('DOMContentLoaded', function() {
         filterForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get current URL parameters
+            // Get current URL parameters to preserve existing filters/sorts
             const urlParams = new URLSearchParams(window.location.search);
             
             // Get form data
             const priceFrom = document.getElementById('priceFrom').value;
             const priceTo = document.getElementById('priceTo').value;
             
-            // Update URL parameters
+            // Update only price filter parameters, preserve everything else
             if (priceFrom) {
                 urlParams.set('filter[price_from]', priceFrom);
             } else {
@@ -81,17 +81,31 @@ document.addEventListener('DOMContentLoaded', function() {
         applyButton.addEventListener('click', function(e) {
             e.preventDefault();
             
+            // Get current URL parameters to preserve existing filters/sorts
+            const urlParams = new URLSearchParams(window.location.search);
+            
             // Get form data
             const priceFrom = document.getElementById('priceFrom').value;
             const priceTo = document.getElementById('priceTo').value;
             
-            // Build URL with parameters
-            const params = new URLSearchParams();
-            if (priceFrom) params.set('filter[price_from]', priceFrom);
-            if (priceTo) params.set('filter[price_to]', priceTo);
-            params.set('page', '1');
+            // Update only price filter parameters, preserve everything else
+            if (priceFrom) {
+                urlParams.set('filter[price_from]', priceFrom);
+            } else {
+                urlParams.delete('filter[price_from]');
+            }
             
-            const newUrl = params.toString() ? `/?${params.toString()}` : '/';
+            if (priceTo) {
+                urlParams.set('filter[price_to]', priceTo);
+            } else {
+                urlParams.delete('filter[price_to]');
+            }
+            
+            // Reset to page 1 when filtering
+            urlParams.set('page', '1');
+            
+            // Build new URL
+            const newUrl = urlParams.toString() ? `/?${urlParams.toString()}` : '/';
             
             window.location.href = newUrl;
         });
@@ -124,10 +138,10 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const sortValue = this.getAttribute('data-sort');
             
-            // Get current URL parameters
+            // Get current URL parameters to preserve existing filters
             const urlParams = new URLSearchParams(window.location.search);
             
-            // Set sort parameter
+            // Set sort parameter, preserve existing price filters
             if (sortValue === 'price_desc') {
                 // For price high to low, we'll use 'price' and handle the reverse on the server
                 urlParams.set('sort', 'price');
@@ -171,3 +185,56 @@ document.addEventListener('DOMContentLoaded', function() {
         priceTo.setAttribute('inputmode', 'numeric');
     }
 });
+
+// Function to remove price filter only
+function removePriceFilter() {
+    // Get current URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Remove only price filter parameters
+    urlParams.delete('filter[price_from]');
+    urlParams.delete('filter[price_to]');
+    urlParams.set('page', '1');
+    
+    // Build new URL
+    const newUrl = urlParams.toString() ? `/?${urlParams.toString()}` : '/';
+    
+    // Redirect to results without price filter
+    window.location.href = newUrl;
+}
+
+// Function to remove sort filter only
+function removeSortFilter() {
+    // Get current URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Remove only sort parameters
+    urlParams.delete('sort');
+    urlParams.delete('sort_order');
+    urlParams.set('page', '1');
+    
+    // Build new URL
+    const newUrl = urlParams.toString() ? `/?${urlParams.toString()}` : '/';
+    
+    // Redirect to results without sort filter
+    window.location.href = newUrl;
+}
+
+// Function to remove all filters and redirect to clean URL
+function removeAllFilters() {
+    // Get current URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Remove all filter parameters
+    urlParams.delete('filter[price_from]');
+    urlParams.delete('filter[price_to]');
+    urlParams.delete('sort');
+    urlParams.delete('sort_order');
+    urlParams.set('page', '1');
+    
+    // Build new URL
+    const newUrl = urlParams.toString() ? `/?${urlParams.toString()}` : '/';
+    
+    // Redirect to clean results
+    window.location.href = newUrl;
+}
