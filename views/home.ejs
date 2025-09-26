@@ -58,7 +58,11 @@
             <!-- Filter and Sort Controls -->
             <div class="flex items-center">
                 <!-- Results Count -->
-                <span class="text-secondary" style="font-size: 12px;">Showing 1-10 of 100 results</span>
+                <% if (typeof pagination !== 'undefined' && pagination.total) { %>
+                    <span class="text-secondary" style="font-size: 12px;">Showing <%= pagination.from %>-<%= pagination.to %> of <%= pagination.total %> results</span>
+                <% } else { %>
+                    <span class="text-secondary" style="font-size: 12px;">Showing 0 results</span>
+                <% } %>
                 
                 <!-- 32px gap -->
                 <div style="width: 32px;"></div>
@@ -164,87 +168,63 @@
         </div>
         <!-- Products Grid -->
         <div class="products-grid" style="margin-top: 32px;">
-            <!-- Card 1 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/images/Front_example.png" alt="Kids' Curved Hilfiger Graphic T‑Shirt">
-                </div>
-                <div class="product-name">Kids' Curved Hilfiger Graphic T‑Shirt</div>
-                <div class="product-price">$ 25</div>
-            </div>
-            <!-- Card 2 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/images/Front_example.png" alt="Kids' Script Foil Logo T‑Shirt">
-                </div>
-                <div class="product-name">Kids' Script Foil Logo T‑Shirt</div>
-                <div class="product-price">$ 65</div>
-            </div>
-            <!-- Card 3 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/images/Front_example.png" alt="Kids' Varsity Logo T‑Shirt">
-                </div>
-                <div class="product-name">Kids' Varsity Logo T‑Shirt</div>
-                <div class="product-price">$ 80</div>
-            </div>
-            <!-- Card 4 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/images/Front_example.png" alt="Kids' Crewneck Sweater">
-                </div>
-                <div class="product-name">Kids' Crewneck Sweater</div>
-                <div class="product-price">$ 45</div>
-            </div>
-            <!-- Card 5 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/images/Front_example.png" alt="Kids' Polo Shirt">
-                </div>
-                <div class="product-name">Kids' Polo Shirt</div>
-                <div class="product-price">$ 35</div>
-            </div>
-            <!-- Card 6 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/images/Front_example.png" alt="Kids' Oxford Shirt">
-                </div>
-                <div class="product-name">Kids' Oxford Shirt</div>
-                <div class="product-price">$ 55</div>
-            </div>
-            <!-- Card 7 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/images/Front_example.png" alt="Kids' Chino Shorts">
-                </div>
-                <div class="product-name">Kids' Chino Shorts</div>
-                <div class="product-price">$ 40</div>
-            </div>
-            <!-- Card 8 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/images/Front_example.png" alt="Kids' Stripe Sweater">
-                </div>
-                <div class="product-name">Kids' Stripe Sweater</div>
-                <div class="product-price">$ 45</div>
-            </div>
-            <!-- Card 9 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/images/Front_example.png" alt="Kids' Logo Tee">
-                </div>
-                <div class="product-name">Kids' Logo Tee</div>
-                <div class="product-price">$ 30</div>
-            </div>
-            <!-- Card 10 -->
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/images/Front_example.png" alt="Kids' Graphic Tee">
-                </div>
-                <div class="product-name">Kids' Graphic Tee</div>
-                <div class="product-price">$ 28</div>
+            <% if (typeof products !== 'undefined' && products.length > 0) { %>
+                <% products.forEach(function(product) { %>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="<%= product.cover_image %>" alt="<%= product.name %>">
+                        </div>
+                        <div class="product-name"><%= product.name %></div>
+                        <div class="product-price">$ <%= product.price %></div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div class="no-products">No products available</div>
+            <% } %>
+        </div>
+        
+        <!-- Pagination -->
+        <% if (typeof pagination !== 'undefined' && pagination.last_page > 1) { %>
+        <div class="pagination-container" style="margin-top: 90px;">
+            <div class="pagination">
+                <!-- Previous Button -->
+                <% if (pagination.current_page > 1) { %>
+                    <a href="?page=<%= pagination.current_page - 1 %>" class="pagination-btn prev-btn">
+                        <i class="ri-arrow-left-s-line"></i>
+                    </a>
+                <% } else { %>
+                    <span class="pagination-btn prev-btn disabled">
+                        <i class="ri-arrow-left-s-line"></i>
+                    </span>
+                <% } %>
+                
+                <!-- Page Numbers -->
+                <% for (let i = 1; i <= pagination.last_page; i++) { %>
+                    <% if (i === pagination.current_page) { %>
+                        <span class="pagination-btn active"><%= i %></span>
+                    <% } else if (i === 1 || i === pagination.last_page || (i >= pagination.current_page - 1 && i <= pagination.current_page + 1)) { %>
+                        <a href="?page=<%= i %>" class="pagination-btn"><%= i %></a>
+                    <% } else if (i === pagination.current_page - 2 || i === pagination.current_page + 2) { %>
+                        <span class="pagination-btn disabled">...</span>
+                    <% } %>
+                <% } %>
+                
+                <!-- Next Button -->
+                <% if (pagination.current_page < pagination.last_page) { %>
+                    <a href="?page=<%= pagination.current_page + 1 %>" class="pagination-btn next-btn">
+                        <i class="ri-arrow-right-s-line"></i>
+                    </a>
+                <% } else { %>
+                    <span class="pagination-btn next-btn disabled">
+                        <i class="ri-arrow-right-s-line"></i>
+                    </span>
+                <% } %>
             </div>
         </div>
+        <% } %>
+        
+        <!-- Bottom spacing -->
+        <div style="height: 60px;"></div>
     </div>
     
     <script src="/scripts/home.js"></script>

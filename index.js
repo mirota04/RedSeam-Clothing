@@ -34,8 +34,38 @@ app.use(session({
   cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }
 }));
 
-app.get('/', (req, res) => {
-    res.render('home.ejs', { user: req.session.user });
+app.get('/', async (req, res) => {
+    try {
+        const page = req.query.page || 1;
+        const apiUrl = process.env.API_URL?.replace(/\/$/, '');
+        const url = `${apiUrl}/products?page=${page}`;
+        
+        const response = await axios.get(url, {
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${yourBearerToken}`,
+            },
+        });
+
+        const products = response.data.data || [];
+        const pagination = response.data.meta || {};
+        
+        res.render('home.ejs', { 
+            user: req.session.user,
+            products: products,
+            pagination: pagination,
+            currentPage: parseInt(page)
+        });
+    } catch (err) {
+        console.error('Error fetching products:', err);
+        // Fallback to empty products on error
+        res.render('home.ejs', { 
+            user: req.session.user,
+            products: [],
+            pagination: {},
+            currentPage: 1
+        });
+    }
 });
 
 app.get('/login', (req, res) => {
