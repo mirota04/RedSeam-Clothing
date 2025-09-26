@@ -1,5 +1,42 @@
 /* Home page specific styles */
 
+/* Layout paddings for products section: 100px left/right */
+.products-section { padding-left: 100px; padding-right: 100px; }
+
+/* 4 columns, 48px column gap, 24px row gap */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 24px;
+    row-gap: 48px;
+}
+
+/* Card sizing: fixed height 614px; width responsive from grid column */
+.product-card {
+    height: 614px;
+}
+
+/* Image area: fixed 549px height; content centered; fill height, crop width */
+.product-image {
+    height: 549px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    overflow: hidden;
+}
+.product-image img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 10px;
+}
+
+/* Name and price spacing/typography */
+.product-name { margin-top: 12px; font-size: 18px; color: #10151F; }
+.product-price { margin-top: 2px; font-size: 16px; color: #3E424A; }
+
 /* Floating label base */
 .form-field {
     position: relative;
