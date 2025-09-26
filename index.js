@@ -37,8 +37,17 @@ app.use(session({
 app.get('/', async (req, res) => {
     try {
         const page = req.query.page || 1;
+        const priceFrom = req.query['filter[price_from]'] || req.query.filter?.price_from;
+        const priceTo = req.query['filter[price_to]'] || req.query.filter?.price_to;
+        const sort = req.query.sort;
+        
         const apiUrl = process.env.API_URL?.replace(/\/$/, '');
-        const url = `${apiUrl}/products?page=${page}`;
+        let url = `${apiUrl}/products?page=${page}`;
+        
+        // Add filter parameters if they exist
+        if (priceFrom) url += `&filter[price_from]=${priceFrom}`;
+        if (priceTo) url += `&filter[price_to]=${priceTo}`;
+        if (sort) url += `&sort=${sort}`;
         
         const response = await axios.get(url, {
             headers: {
@@ -54,7 +63,12 @@ app.get('/', async (req, res) => {
             user: req.session.user,
             products: products,
             pagination: pagination,
-            currentPage: parseInt(page)
+            currentPage: parseInt(page),
+            filters: {
+                priceFrom: priceFrom || '',
+                priceTo: priceTo || '',
+                sort: sort || ''
+            }
         });
     } catch (err) {
         console.error('Error fetching products:', err);
@@ -63,7 +77,12 @@ app.get('/', async (req, res) => {
             user: req.session.user,
             products: [],
             pagination: {},
-            currentPage: 1
+            currentPage: 1,
+            filters: {
+                priceFrom: '',
+                priceTo: '',
+                sort: ''
+            }
         });
     }
 });

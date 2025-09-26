@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Filter dropdown functionality
     const filterButton = document.getElementById('filterButton');
     const filterDropdown = document.getElementById('filterDropdown');
+    const filterForm = document.getElementById('filterForm');
     
     if (filterButton && filterDropdown) {
         // Toggle dropdown on button click
@@ -35,6 +36,64 @@ document.addEventListener('DOMContentLoaded', function() {
         // Prevent dropdown from closing when clicking inside it
         filterDropdown.addEventListener('click', (e) => {
             e.stopPropagation();
+        });
+    }
+    
+    // Handle filter form submission
+    if (filterForm) {
+        filterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get current URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Get form data
+            const priceFrom = document.getElementById('priceFrom').value;
+            const priceTo = document.getElementById('priceTo').value;
+            
+            // Update URL parameters
+            if (priceFrom) {
+                urlParams.set('filter[price_from]', priceFrom);
+            } else {
+                urlParams.delete('filter[price_from]');
+            }
+            
+            if (priceTo) {
+                urlParams.set('filter[price_to]', priceTo);
+            } else {
+                urlParams.delete('filter[price_to]');
+            }
+            
+            // Reset to page 1 when filtering
+            urlParams.set('page', '1');
+            
+            // Build new URL
+            const newUrl = urlParams.toString() ? `/?${urlParams.toString()}` : '/';
+            
+            // Redirect to filtered results
+            window.location.href = newUrl;
+        });
+    }
+    
+    // Also add click handler to Apply button as backup
+    const applyButton = document.querySelector('#filterForm button[type="submit"]');
+    if (applyButton) {
+        applyButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const priceFrom = document.getElementById('priceFrom').value;
+            const priceTo = document.getElementById('priceTo').value;
+            
+            // Build URL with parameters
+            const params = new URLSearchParams();
+            if (priceFrom) params.set('filter[price_from]', priceFrom);
+            if (priceTo) params.set('filter[price_to]', priceTo);
+            params.set('page', '1');
+            
+            const newUrl = params.toString() ? `/?${params.toString()}` : '/';
+            
+            window.location.href = newUrl;
         });
     }
     
