@@ -24,6 +24,22 @@ const upload = multer({
 
 app.set('view engine', 'ejs');
 
+// Helper function to build pagination URLs with current filters
+const buildPaginationUrl = (pageNum, filters = {}) => {
+    const params = new URLSearchParams();
+    params.set('page', pageNum);
+    
+    if (filters.priceFrom) params.set('filter[price_from]', filters.priceFrom);
+    if (filters.priceTo) params.set('filter[price_to]', filters.priceTo);
+    if (filters.sort) params.set('sort', filters.sort);
+    if (filters.sortOrder) params.set('sort_order', filters.sortOrder);
+    
+    return `/?${params.toString()}`;
+};
+
+// Make buildPaginationUrl available to all EJS templates
+app.locals.buildPaginationUrl = buildPaginationUrl;
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
@@ -36,13 +52,36 @@ app.use(session({
 
 app.get('/', async (req, res) => {
     try {
-        const page = req.query.page || 1;
+        let page = req.query.page || 1;
         const priceFrom = req.query['filter[price_from]'] || req.query.filter?.price_from;
         const priceTo = req.query['filter[price_to]'] || req.query.filter?.price_to;
         const sort = req.query.sort;
+        const sortOrder = req.query.sort_order;
         
         const apiUrl = process.env.API_URL?.replace(/\/$/, '');
-        let url = `${apiUrl}/products?page=${page}`;
+        let actualPage = page;
+        
+        // For price high-to-low, we need to reverse the page numbers
+        if (sort === 'price' && sortOrder === 'desc') {
+            // First, get the total number of pages to calculate the reversed page
+            const tempUrl = `${apiUrl}/products?page=1`;
+            let tempUrlWithFilters = tempUrl;
+            if (priceFrom) tempUrlWithFilters += `&filter[price_from]=${priceFrom}`;
+            if (priceTo) tempUrlWithFilters += `&filter[price_to]=${priceTo}`;
+            if (sort) tempUrlWithFilters += `&sort=${sort}`;
+            
+            const tempResponse = await axios.get(tempUrlWithFilters, {
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${yourBearerToken}`,
+                },
+            });
+            
+            const totalPages = tempResponse.data.meta?.last_page || 1;
+            actualPage = totalPages - parseInt(page) + 1;
+        }
+        
+        let url = `${apiUrl}/products?page=${actualPage}`;
         
         // Add filter parameters if they exist
         if (priceFrom) url += `&filter[price_from]=${priceFrom}`;
@@ -56,8 +95,21 @@ app.get('/', async (req, res) => {
             },
         });
 
-        const products = response.data.data || [];
-        const pagination = response.data.meta || {};
+        let products = response.data.data || [];
+        let pagination = response.data.meta || {};
+        
+        // Handle price high-to-low sorting by reversing the array
+        if (sort === 'price' && sortOrder === 'desc') {
+            products = products.reverse();
+            
+            // Update pagination to show correct page numbers for high-to-low
+            pagination = {
+                ...pagination,
+                current_page: parseInt(page), // Show the original page number
+                prev: pagination.next ? `?page=${parseInt(page) + 1}` : null,
+                next: pagination.prev ? `?page=${parseInt(page) - 1}` : null
+            };
+        }
         
         res.render('home.ejs', { 
             user: req.session.user,
@@ -67,7 +119,8 @@ app.get('/', async (req, res) => {
             filters: {
                 priceFrom: priceFrom || '',
                 priceTo: priceTo || '',
-                sort: sort || ''
+                sort: sort || '',
+                sortOrder: sortOrder || ''
             }
         });
     } catch (err) {
@@ -81,7 +134,8 @@ app.get('/', async (req, res) => {
             filters: {
                 priceFrom: '',
                 priceTo: '',
-                sort: ''
+                sort: '',
+                sortOrder: ''
             }
         });
     }

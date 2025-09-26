@@ -157,13 +157,13 @@
                             
                             <!-- Sort Options -->
                             <div class="flex-1 flex flex-col">
-                                <button class="text-left text-secondary hover:text-primary transition-colors duration-200 py-2" style="font-size: 16px;">
+                                <button class="sort-option text-left text-secondary hover:text-primary transition-colors duration-200 py-2" style="font-size: 16px;" data-sort="created_at">
                                     New products first
                                 </button>
-                                <button class="text-left text-secondary hover:text-primary transition-colors duration-200 py-2" style="font-size: 16px;">
+                                <button class="sort-option text-left text-secondary hover:text-primary transition-colors duration-200 py-2" style="font-size: 16px;" data-sort="price">
                                     Price, low to high
                                 </button>
-                                <button class="text-left text-secondary hover:text-primary transition-colors duration-200 py-2" style="font-size: 16px;">
+                                <button class="sort-option text-left text-secondary hover:text-primary transition-colors duration-200 py-2" style="font-size: 16px;" data-sort="price_desc">
                                     Price, high to low
                                 </button>
                             </div>
@@ -195,7 +195,7 @@
             <div class="pagination">
                 <!-- Previous Button -->
                 <% if (pagination.current_page > 1) { %>
-                    <a href="?page=<%= pagination.current_page - 1 %>" class="pagination-btn prev-btn">
+                    <a href="<%= buildPaginationUrl(pagination.current_page - 1, filters) %>" class="pagination-btn prev-btn">
                         <i class="ri-arrow-left-s-line"></i>
                     </a>
                 <% } else { %>
@@ -209,7 +209,7 @@
                     <% if (i === pagination.current_page) { %>
                         <span class="pagination-btn active"><%= i %></span>
                     <% } else if (i === 1 || i === pagination.last_page || (i >= pagination.current_page - 1 && i <= pagination.current_page + 1)) { %>
-                        <a href="?page=<%= i %>" class="pagination-btn"><%= i %></a>
+                        <a href="<%= buildPaginationUrl(i, filters) %>" class="pagination-btn"><%= i %></a>
                     <% } else if (i === pagination.current_page - 2 || i === pagination.current_page + 2) { %>
                         <span class="pagination-btn disabled">...</span>
                     <% } %>
@@ -217,7 +217,7 @@
                 
                 <!-- Next Button -->
                 <% if (pagination.current_page < pagination.last_page) { %>
-                    <a href="?page=<%= pagination.current_page + 1 %>" class="pagination-btn next-btn">
+                    <a href="<%= buildPaginationUrl(pagination.current_page + 1, filters) %>" class="pagination-btn next-btn">
                         <i class="ri-arrow-right-s-line"></i>
                     </a>
                 <% } else { %>

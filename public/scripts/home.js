@@ -100,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Sort dropdown functionality
     const sortButton = document.getElementById('sortButton');
     const sortDropdown = document.getElementById('sortDropdown');
+    const sortOptions = document.querySelectorAll('.sort-option');
     
     if (sortButton && sortDropdown) {
         // Toggle dropdown on button click
@@ -115,6 +116,37 @@ document.addEventListener('DOMContentLoaded', function() {
             e.stopPropagation();
         });
     }
+    
+    // Handle sort option clicks
+    sortOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const sortValue = this.getAttribute('data-sort');
+            
+            // Get current URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Set sort parameter
+            if (sortValue === 'price_desc') {
+                // For price high to low, we'll use 'price' and handle the reverse on the server
+                urlParams.set('sort', 'price');
+                urlParams.set('sort_order', 'desc');
+            } else {
+                urlParams.set('sort', sortValue);
+                urlParams.delete('sort_order');
+            }
+            
+            // Reset to page 1 when sorting
+            urlParams.set('page', '1');
+            
+            // Build new URL
+            const newUrl = urlParams.toString() ? `/?${urlParams.toString()}` : '/';
+            
+            // Redirect to sorted results
+            window.location.href = newUrl;
+        });
+    });
     
     // Close dropdowns when clicking outside
     document.addEventListener('click', (e) => {
