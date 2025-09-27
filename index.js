@@ -196,6 +196,12 @@ app.get('/register', (req, res) => {
     res.render('register.ejs');
 });
 
+app.get('/product', (req, res) => {
+    res.render('productPage.ejs', { 
+        user: req.session.user 
+    });
+});
+
 // Proxy registration to external API
 app.post('/register', upload.any(), async (req, res) => {
   try {

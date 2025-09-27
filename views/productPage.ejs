@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/images/Logo.png">
+    <title>Product - RedSeam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="/styles/productPage.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10151F',
+                        secondary: '#3E424A',
+                        grey: '#F8F6F7',
+                        white: '#FFFFFF',
+                        red: '#FF4000'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-poppins bg-white text-secondary">
+    <% if (typeof user !== 'undefined' && user) { %>
+        <%- include('partials/headerLogin') %>
+    <% } else { %>
+        <%- include('partials/headerNotLogin') %>
+    <% } %>
+
+    <!-- Product Page Content -->
+    <main class="min-h-screen">
+        <!-- Breadcrumb Section -->
+        <section class="breadcrumb-section" style="padding-top: 30px; padding-left: 100px; padding-right: 100px;">
+            <div class="breadcrumb-text" style="font-size: 14px; color: #000000;">
+                Listing / Product
+            </div>
+        </section>
+
+        <!-- Main Product Section -->
+        <section class="product-main-section" style="padding-top: 49px; padding-left: 100px; padding-right: 100px;">
+            <div class="product-content-container" style="display: flex; gap: 24px;">
+                <!-- First Subsection - Left -->
+                <div class="product-left-section" style="flex: 1; max-width: 121px;">
+                    <!-- Product Image Gallery -->
+                    <div class="product-gallery" style="display: flex; flex-direction: column; gap: 9px;">
+                        <!-- Gallery Image 1 -->
+                        <div class="gallery-image" style="width: 121px; border-radius: 10px; overflow: hidden; border: 1px solid #E1DFE1; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="changeMainImage('/images/Front_example.png')">
+                            <img src="/images/Front_example.png" alt="Product view 1" style="width: 100%; height: auto; display: block;">
+                        </div>
+                        
+                        <!-- Gallery Image 2 -->
+                        <div class="gallery-image" style="width: 121px; border-radius: 10px; overflow: hidden; border: 1px solid #E1DFE1; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="changeMainImage('/images/Front_example.png')">
+                            <img src="/images/Front_example.png" alt="Product view 2" style="width: 100%; height: auto; display: block;">
+                        </div>
+                        
+                        <!-- Gallery Image 3 -->
+                        <div class="gallery-image" style="width: 121px; border-radius: 10px; overflow: hidden; border: 1px solid #E1DFE1; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="changeMainImage('/images/Front_example.png')">
+                            <img src="/images/Front_example.png" alt="Product view 3" style="width: 100%; height: auto; display: block;">
+                        </div>
+                        
+                        <!-- Gallery Image 4 -->
+                        <div class="gallery-image" style="width: 121px; border-radius: 10px; overflow: hidden; border: 1px solid #E1DFE1; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="changeMainImage('/images/Front_example.png')">
+                            <img src="/images/Front_example.png" alt="Product view 4" style="width: 100%; height: auto; display: block;">
+                        </div>
+                        
+                        <!-- Gallery Image 5 -->
+                        <div class="gallery-image" style="width: 121px; border-radius: 10px; overflow: hidden; border: 1px solid #E1DFE1; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); cursor: pointer;" onclick="changeMainImage('/images/Front_example.png')">
+                            <img src="/images/Front_example.png" alt="Product view 5" style="width: 100%; height: auto; display: block;">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Second Subsection - Middle -->
+                <div class="product-middle-section" style="flex: 1; max-width: 703px;">
+                    <!-- Main Product Image -->
+                    <div class="main-product-image" style="width: 700px; border-radius: 10px; overflow: hidden; border: 1px solid #E1DFE1; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                        <img id="mainImage" src="/images/Front_example.png" alt="Main product view" style="width: 100%; height: auto; display: block;">
+                    </div>
+                </div>
+                
+                <!-- Third Subsection - Right -->
+                <div class="product-right-section" style="flex: 1; max-width: 704px;">
+                    <!-- Product Information Container -->
+                    <div class="product-info-container" style="display: flex; flex-direction: column; gap: 56px;">
+                        
+                        <!-- First Subsection - Product Name and Price -->
+                        <div class="product-basic-info" style="display: flex; flex-direction: column; gap: 21px;">
+                            <!-- Product Name -->
+                            <div class="product-name" style="font-size: 32px; font-weight: 600; color: #000000;">
+                                Kids' Curved Hilfiger Graphic T-Shirt
+                            </div>
+                            
+                            <!-- Product Price -->
+                            <div class="product-price" style="font-size: 32px; font-weight: 600; color: #000000;">
+                                $ 25
+                            </div>
+                        </div>
+                        
+                        <!-- Second Subsection - Color Selection -->
+                        <div class="product-subsection-2">
+                            <!-- Color Selection Container -->
+                            <div class="color-selection-container" style="display: flex; flex-direction: column; gap: 48px;">
+                                
+                                <!-- Color Option 1 -->
+                                <div class="color-option" style="display: flex; flex-direction: column; gap: 16px;">
+                                    <!-- Color Label -->
+                                    <div class="color-label" style="font-size: 16px; font-weight: 400; color: #000000;">
+                                        Color: Baby pink
+                                    </div>
+                                    
+                                    <!-- Color Circles -->
+                                    <div class="color-circles" style="display: flex; gap: 18px;">
+                                        <!-- Purple Circle -->
+                                        <div class="color-circle" style="width: 38px; height: 38px; border-radius: 50%; background-color: #8B5CF6; cursor: pointer;" onclick="selectColor(this, 'purple')"></div>
+                                        
+                                        <!-- Baby Pink Circle (Active) -->
+                                        <div class="color-circle active" style="width: 38px; height: 38px; border-radius: 50%; background-color: #F8BBD9; border: 1px solid #E1DFE1; cursor: pointer;" onclick="selectColor(this, 'baby-pink')"></div>
+                                        
+                                        <!-- Light Yellow Circle -->
+                                        <div class="color-circle" style="width: 38px; height: 38px; border-radius: 50%; background-color: #FEF3C7; cursor: pointer;" onclick="selectColor(this, 'light-yellow')"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Size Selection -->
+                                <div class="size-selection" style="display: flex; flex-direction: column; gap: 16px;">
+                                    <!-- Size Label -->
+                                    <div class="size-label" style="font-size: 16px; font-weight: 400; color: #000000;">
+                                        Size: L
+                                    </div>
+                                    
+                                    <!-- Size Boxes -->
+                                    <div class="size-boxes" style="display: flex; gap: 12px;">
+                                        <!-- XS Size -->
+                                        <div class="size-box" style="width: 70px; height: 42px; border-radius: 10px; border: 1px solid #E1DFE1; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; font-weight: 400; color: #000000;" onclick="selectSize(this, 'XS')" onmouseover="this.style.borderColor='#10151F'" onmouseout="this.style.borderColor='#E1DFE1'">
+                                            XS
+                                        </div>
+                                        
+                                        <!-- S Size -->
+                                        <div class="size-box" style="width: 70px; height: 42px; border-radius: 10px; border: 1px solid #E1DFE1; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; font-weight: 400; color: #000000;" onclick="selectSize(this, 'S')" onmouseover="this.style.borderColor='#10151F'" onmouseout="this.style.borderColor='#E1DFE1'">
+                                            S
+                                        </div>
+                                        
+                                        <!-- M Size -->
+                                        <div class="size-box" style="width: 70px; height: 42px; border-radius: 10px; border: 1px solid #E1DFE1; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; font-weight: 400; color: #000000;" onclick="selectSize(this, 'M')" onmouseover="this.style.borderColor='#10151F'" onmouseout="this.style.borderColor='#E1DFE1'">
+                                            M
+                                        </div>
+                                        
+                                        <!-- L Size (Active) -->
+                                        <div class="size-box active" style="width: 70px; height: 42px; border-radius: 10px; border: 1px solid #10151F; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; font-weight: 400; color: #000000;" onclick="selectSize(this, 'L')" onmouseover="this.style.borderColor='#10151F'" onmouseout="this.style.borderColor='#10151F'">
+                                            L
+                                        </div>
+                                        
+                                        <!-- XL Size -->
+                                        <div class="size-box" style="width: 70px; height: 42px; border-radius: 10px; border: 1px solid #E1DFE1; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; font-weight: 400; color: #000000;" onclick="selectSize(this, 'XL')" onmouseover="this.style.borderColor='#10151F'" onmouseout="this.style.borderColor='#E1DFE1'">
+                                            XL
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Quantity Selection -->
+                                <div class="quantity-selection" style="display: flex; flex-direction: column; gap: 16px;">
+                                    <!-- Quantity Label -->
+                                    <div class="quantity-label" style="font-size: 16px; font-weight: 400; color: #000000;">
+                                        Quantity
+                                    </div>
+                                    
+                                    <!-- Quantity Dropdown -->
+                                    <div class="quantity-dropdown-container" style="position: relative; width: 70px; height: 42px;">
+                                        <select id="quantitySelect" class="quantity-select" style="width: 100%; height: 100%; border-radius: 10px; border: 1px solid #E1DFE1; padding: 0 30px 0 12px; font-size: 16px; font-weight: 400; color: #000000; background-color: white; cursor: pointer; appearance: none; outline: none;" onchange="updateQuantity(this.value)">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                        <!-- Custom Dropdown Arrow -->
+                                        <div class="dropdown-arrow" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #666; font-size: 12px;">
+                                            ▼
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+                        <!-- Third Subsection - Add to Cart Button -->
+                        <div class="product-subsection-3">
+                            <!-- Add to Cart Button -->
+                            <button class="add-to-cart-btn" style="width: 100%; max-width: 704px; height: 59px; background-color: #FF4000; border: none; border-radius: 10px; color: white; font-size: 18px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: background-color 0.2s ease;" onmouseover="this.style.backgroundColor='#E63900'" onmouseout="this.style.backgroundColor='#FF4000'" onclick="addToCart()">
+                                <!-- Cart Icon -->
+                                <i class="ri-shopping-cart-line" style="font-size: 24px; color: white;"></i>
+                                <!-- Button Text -->
+                                <span>Add to cart</span>
+                            </button>
+                            
+                            <!-- Horizontal Line -->
+                            <div class="horizontal-line" style="width: 100%; max-width: 704px; height: 1px; background-color: #E1DFE1; margin-top: 56px;"></div>
+                        </div>
+                        
+                        <!-- Fourth Subsection - Details Header and Description -->
+                        <div class="product-subsection-4">
+                            <!-- Details Header -->
+                            <div class="details-header" style="width: 100%; max-width: 704px; display: flex; align-items: center; justify-content: space-between;">
+                                <!-- Details Text -->
+                                <div class="details-title" style="font-size: 20px; font-weight: 500; color: #10151F;">
+                                    Details
+                                </div>
+                                
+                                <!-- Brand Logo -->
+                                <div class="brand-logo" style="height: 61px; display: flex; align-items: center;">
+                                    <img src="https://logos-world.net/wp-content/uploads/2020/04/Tommy-Hilfiger-Logo.png" alt="Tommy Hilfiger" style="height: 100%; width: auto; object-fit: contain;">
+                                </div>
+                            </div>
+                            
+                            <!-- Description Part -->
+                            <div class="description-part" style="width: 100%; max-width: 704px; margin-top: 7px;">
+                                <!-- Brand Text -->
+                                <div class="brand-text" style="font-size: 16px; font-weight: 400; color: #3E424A; margin-bottom: 19px;">
+                                    Brand: Tommy Hilfiger
+                                </div>
+                                
+                                <!-- Product Description -->
+                                <div class="product-description" style="font-size: 16px; font-weight: 400; color: #3E424A; line-height: 1.5;">
+                                    This product contains regenerative cotton, which is grown using farming methods that seek to improve soil health, watersheds and biodiversity.
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/scripts/productPage.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+/* Product Page Styles */
+
+/* Base styles for product page */
+.product-page {
+    min-height: 100vh;
+    background-color: #FFFFFF;
+}
+
+/* Responsive Add to Cart Button, Horizontal Line, Details Header, and Description */
+@media (max-width: 1800px) {
+    .add-to-cart-btn,
+    .horizontal-line,
+    .details-header,
+    .description-part {
+        max-width: 641px !important;
+    }
+}
+
+@media (min-width: 1801px) {
+    .add-to-cart-btn,
+    .horizontal-line,
+    .details-header,
+    .description-part {
+        max-width: 704px !important;
+    }
+}
+
+/* Add your product page specific styles here */
