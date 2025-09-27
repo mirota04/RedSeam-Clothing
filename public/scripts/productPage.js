@@ -22,12 +22,18 @@ function changeMainImage(imageSrc) {
 }
 
 // Function to handle color selection
-function selectColor(clickedCircle, colorName) {
+function selectColor(clickedCircle, colorName, colorIndex) {
     // Remove active class from all color circles
     const allCircles = document.querySelectorAll('.color-circle');
     allCircles.forEach(circle => {
         circle.classList.remove('active');
-        circle.style.border = 'none';
+        // Reset border based on color
+        const bgColor = circle.style.backgroundColor;
+        if (bgColor === 'rgb(255, 255, 255)' || bgColor === '#ffffff' || bgColor === '#FFFFFF') {
+            circle.style.border = '1px solid #D1D5DB'; // Grey border for white
+        } else {
+            circle.style.border = 'none';
+        }
     });
     
     // Add active class to clicked circle
@@ -43,6 +49,26 @@ function selectColor(clickedCircle, colorName) {
             'light-yellow': 'Light yellow'
         };
         colorLabel.textContent = `Color: ${colorNames[colorName] || colorName}`;
+    }
+    
+    // Change main image based on color selection
+    changeMainImageByColorIndex(colorIndex);
+}
+
+// Function to change main image based on color index
+function changeMainImageByColorIndex(colorIndex) {
+    const mainImage = document.getElementById('mainImage');
+    if (!mainImage) return;
+    
+    // Get all gallery images
+    const galleryImages = document.querySelectorAll('.gallery-image img');
+    
+    if (galleryImages && galleryImages.length > colorIndex) {
+        // Use the image at the same index as the selected color
+        const targetImage = galleryImages[colorIndex];
+        if (targetImage) {
+            mainImage.src = targetImage.src;
+        }
     }
 }
 
