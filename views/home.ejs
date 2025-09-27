@@ -211,15 +211,15 @@
         <!-- Products Grid -->
         <div class="products-grid" style="margin-top: 26px;">
             <% if (typeof products !== 'undefined' && products.length > 0) { %>
-                <% products.forEach(function(product) { %>
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="<%= product.cover_image %>" alt="<%= product.name %>">
-                        </div>
-                        <div class="product-name"><%= product.name %></div>
-                        <div class="product-price">$ <%= product.price %></div>
+            <% products.forEach(function(product) { %>
+                <div class="product-card" onclick="goToProduct(<%= product.id %>)" style="cursor: pointer;">
+                    <div class="product-image">
+                        <img src="<%= product.cover_image %>" alt="<%= product.name %>">
                     </div>
-                <% }); %>
+                    <div class="product-name"><%= product.name %></div>
+                    <div class="product-price">$ <%= product.price %></div>
+                </div>
+            <% }); %>
             <% } else { %>
                 <div class="no-products">No products available</div>
             <% } %>

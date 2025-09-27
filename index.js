@@ -40,6 +40,25 @@ const buildPaginationUrl = (pageNum, filters = {}) => {
 // Make buildPaginationUrl available to all EJS templates
 app.locals.buildPaginationUrl = buildPaginationUrl;
 
+// Helper function to get color code for EJS
+const getColorCode = (colorName) => {
+    const colorMap = {
+        'Yellow': '#FEF3C7',
+        'Green': '#10B981',
+        'Red': '#EF4444',
+        'Blue': '#3B82F6',
+        'Purple': '#8B5CF6',
+        'Pink': '#F8BBD9',
+        'Black': '#000000',
+        'White': '#FFFFFF',
+        'Gray': '#6B7280',
+        'Orange': '#F97316'
+    };
+    return colorMap[colorName] || '#F8BBD9';
+};
+
+app.locals.getColorCode = getColorCode;
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
@@ -196,10 +215,33 @@ app.get('/register', (req, res) => {
     res.render('register.ejs');
 });
 
-app.get('/product', (req, res) => {
-    res.render('productPage.ejs', { 
-        user: req.session.user 
-    });
+app.get('/product/:id', async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const apiUrl = process.env.API_URL?.replace(/\/$/, '');
+        
+        // Fetch product data from API
+        const response = await axios.get(`${apiUrl}/products/${productId}`, {
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${yourBearerToken}`,
+            },
+        });
+
+        const product = response.data;
+        
+        res.render('productPage.ejs', { 
+            user: req.session.user,
+            product: product
+        });
+    } catch (err) {
+        console.error('Error fetching product:', err);
+        // Fallback to empty product on error
+        res.render('productPage.ejs', { 
+            user: req.session.user,
+            product: null
+        });
+    }
 });
 
 // Proxy registration to external API

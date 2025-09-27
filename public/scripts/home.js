@@ -238,3 +238,8 @@ function removeAllFilters() {
     // Redirect to clean results
     window.location.href = newUrl;
 }
+
+// Function to navigate to product page
+function goToProduct(productId) {
+    window.location.href = `/product/${productId}`;
+}
