@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
     <link href="/styles/home.css" rel="stylesheet">
+    <link href="/styles/cart.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -269,6 +270,15 @@
         <div style="height: 60px;"></div>
     </div>
     
+    <script>
+        // Pass token to client-side JavaScript
+        const serverToken = '<%= typeof token !== "undefined" ? token : "" %>';
+        
+        if (serverToken && serverToken !== '') {
+            sessionStorage.setItem('userToken', serverToken);
+        }
+    </script>
     <script src="/scripts/home.js"></script>
+    <script src="/scripts/cart.js"></script>
 </body>
 </html>

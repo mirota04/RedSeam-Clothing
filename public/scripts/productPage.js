@@ -106,21 +106,108 @@ function updateQuantity(quantity) {
 }
 
 // Function to handle add to cart
-function addToCart() {
+async function handleAddToCart() {
     // Get selected values
-    const selectedColor = document.querySelector('.color-circle.active')?.getAttribute('data-original-color') || 'baby-pink';
-    const selectedSize = document.querySelector('.size-box.active')?.textContent || 'L';
-    const selectedQuantity = document.getElementById('quantitySelect')?.value || '1';
+    const activeColorCircle = document.querySelector('.color-circle.active');
+    const activeSizeBox = document.querySelector('.size-box.active');
+    const selectedQuantity = parseInt(document.getElementById('quantitySelect')?.value) || 1;
     
-    console.log('Adding to cart:', {
+    // Extract color from the active color circle's onclick attribute or data
+    let selectedColor = 'Default';
+    if (activeColorCircle && activeColorCircle.getAttribute('onclick')) {
+        const onclickAttr = activeColorCircle.getAttribute('onclick');
+        const colorMatch = onclickAttr.match(/selectColor\([^,]+,\s*'([^']+)'/);
+        if (colorMatch) {
+            selectedColor = colorMatch[1];
+        }
+    }
+    
+    // Extract size from the active size box's onclick attribute or data
+    let selectedSize = 'L';
+    if (activeSizeBox && activeSizeBox.getAttribute('onclick')) {
+        const onclickAttr = activeSizeBox.getAttribute('onclick');
+        const sizeMatch = onclickAttr.match(/selectSize\([^,]+,\s*'([^']+)'/);
+        if (sizeMatch) {
+            selectedSize = sizeMatch[1];
+        }
+    }
+    
+    // Get product data from the page
+    const productName = document.querySelector('.product-name')?.textContent || 'Product';
+    const productPriceText = document.querySelector('.product-price')?.textContent || '$0';
+    const productPrice = parseFloat(productPriceText.replace('$', '').trim()) || 0;
+    const productImage = document.getElementById('mainImage')?.src || '/images/Front_example.png';
+    
+    const productData = {
+        id: window.productId || 1,
+        name: productName,
+        price: productPrice,
+        image: productImage,
         color: selectedColor,
         size: selectedSize,
         quantity: selectedQuantity
-    });
+    };
     
-    // You can add additional logic here for cart functionality
-    // For example, API calls, cart updates, notifications, etc.
+    // Validate product data
+    if (!productData.id || productData.id === 'null' || productData.id === null) {
+        alert('Error: Product ID not found. Please refresh the page and try again.');
+        return;
+    }
     
-    // Show success message (optional)
-    alert(`Added ${selectedQuantity} item(s) to cart!`);
+    if (!productData.name || productData.name === 'Product') {
+        alert('Error: Product name not found. Please refresh the page and try again.');
+        return;
+    }
+    
+    // Call the global cart function directly
+    try {
+        if (typeof window.addToCart === 'function') {
+            await window.addToCart(productData);
+            alert(`Added ${selectedQuantity} item(s) to cart!`);
+        } else {
+            // Fallback: direct API call
+            await addToCartDirect(productData);
+        }
+    } catch (error) {
+        alert('Error adding to cart: ' + error.message);
+    }
+}
+
+// Direct API call fallback
+async function addToCartDirect(productData) {
+    try {
+        // Get token
+        const token = sessionStorage.getItem('userToken');
+        if (!token) {
+            throw new Error('No user token found');
+        }
+        
+        // Prepare request body
+        const requestBody = {
+            quantity: productData.quantity || 1,
+            color: productData.color || 'Default',
+            size: productData.size || 'L'
+        };
+        
+        // Make API call
+        const response = await fetch(`${window.location.origin}/api/cart/products/${productData.id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            alert(`Added ${productData.quantity} item(s) to cart!`);
+        } else {
+            const errorText = await response.text();
+            throw new Error(`API Error: ${response.status} - ${errorText}`);
+        }
+    } catch (error) {
+        throw error;
+    }
 }

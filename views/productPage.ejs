@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet">
     <link href="/styles/productPage.css" rel="stylesheet">
+    <link href="/styles/cart.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -189,7 +190,7 @@
                         <!-- Third Subsection - Add to Cart Button -->
                         <div class="product-subsection-3">
                             <!-- Add to Cart Button -->
-                            <button class="add-to-cart-btn" style="width: 100%; max-width: 704px; height: 59px; background-color: #FF4000; border: none; border-radius: 10px; color: white; font-size: 18px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: background-color 0.2s ease;" onmouseover="this.style.backgroundColor='#E63900'" onmouseout="this.style.backgroundColor='#FF4000'" onclick="addToCart()">
+                            <button class="add-to-cart-btn" style="width: 100%; max-width: 704px; height: 59px; background-color: #FF4000; border: none; border-radius: 10px; color: white; font-size: 18px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: background-color 0.2s ease;" onmouseover="this.style.backgroundColor='#E63900'" onmouseout="this.style.backgroundColor='#FF4000'" onclick="handleAddToCart()">
                                 <!-- Cart Icon -->
                                 <i class="ri-shopping-cart-line" style="font-size: 24px; color: white;"></i>
                                 <!-- Button Text -->
@@ -238,6 +239,19 @@
         <div style="height: 100px;"></div>
     </main>
 
+    <script>
+        // Pass product data to JavaScript
+        window.productId = <%= product ? product.id : 'null' %>;
+    </script>
+    <script>
+        // Pass token to client-side JavaScript
+        const serverToken = '<%= typeof token !== "undefined" ? token : "" %>';
+        
+        if (serverToken && serverToken !== '') {
+            sessionStorage.setItem('userToken', serverToken);
+        }
+    </script>
     <script src="/scripts/productPage.js"></script>
+    <script src="/scripts/cart.js"></script>
 </body>
 </html>

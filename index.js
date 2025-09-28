@@ -132,6 +132,7 @@ app.get('/', async (req, res) => {
         
         res.render('home.ejs', { 
             user: req.session.user,
+            token: req.session.token,
             products: products,
             pagination: pagination,
             currentPage: parseInt(page),
@@ -232,6 +233,7 @@ app.get('/product/:id', async (req, res) => {
         
         res.render('productPage.ejs', { 
             user: req.session.user,
+            token: req.session.token,
             product: product
         });
     } catch (err) {
@@ -241,6 +243,113 @@ app.get('/product/:id', async (req, res) => {
             user: req.session.user,
             product: null
         });
+    }
+});
+
+// Cart API routes
+app.post('/api/cart/products/:productId', async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const apiUrl = process.env.API_URL?.replace(/\/$/, '');
+        const userToken = req.headers.authorization?.replace('Bearer ', '');
+        
+        if (!userToken) {
+            return res.status(401).json({ message: 'No authorization token provided' });
+        }
+
+        const response = await axios.post(`${apiUrl}/cart/products/${productId}`, req.body, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`,
+                'Accept': 'application/json'
+            }
+        });
+
+        res.json(response.data);
+    } catch (err) {
+        console.error('Error adding product to cart:', err);
+        res.status(err.response?.status || 500).json({ message: 'Failed to add product to cart' });
+    }
+});
+
+app.patch('/api/cart/products/:productId', async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const apiUrl = process.env.API_URL?.replace(/\/$/, '');
+        const userToken = req.headers.authorization?.replace('Bearer ', '');
+        
+        if (!userToken) {
+            return res.status(401).json({ message: 'No authorization token provided' });
+        }
+
+        const response = await axios.patch(`${apiUrl}/cart/products/${productId}`, req.body, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`,
+                'Accept': 'application/json'
+            }
+        });
+
+        res.json(response.data);
+    } catch (err) {
+        console.error('Error updating product quantity:', err);
+        res.status(err.response?.status || 500).json({ message: 'Failed to update product quantity' });
+    }
+});
+
+app.delete('/api/cart/products/:productId', async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const apiUrl = process.env.API_URL?.replace(/\/$/, '');
+        const userToken = req.headers.authorization?.replace('Bearer ', '');
+        
+        if (!userToken) {
+            return res.status(401).json({ message: 'No authorization token provided' });
+        }
+
+        const response = await axios.delete(`${apiUrl}/cart/products/${productId}`, {
+            headers: {
+                'Authorization': `Bearer ${userToken}`,
+                'Accept': 'application/json'
+            }
+        });
+
+        res.status(response.status).json(response.data);
+    } catch (err) {
+        console.error('Error removing product from cart:', err);
+        res.status(err.response?.status || 500).json({ message: 'Failed to remove product from cart' });
+    }
+});
+
+app.get('/api/cart', async (req, res) => {
+    try {
+        const apiUrl = process.env.API_URL?.replace(/\/$/, '');
+        const userToken = req.headers.authorization?.replace('Bearer ', '');
+        
+        if (!userToken) {
+            return res.status(401).json({ message: 'No authorization token provided' });
+        }
+
+        const response = await axios.get(`${apiUrl}/cart`, {
+            headers: {
+                'Authorization': `Bearer ${userToken}`,
+                'Accept': 'application/json'
+            }
+        });
+
+        res.json(response.data);
+    } catch (err) {
+        console.error('Error fetching cart:', err);
+        res.status(err.response?.status || 500).json({ message: 'Failed to fetch cart' });
+    }
+});
+
+// Get user token from session
+app.get('/api/user/token', (req, res) => {
+    if (req.session.token) {
+        res.json({ token: req.session.token });
+    } else {
+        res.status(401).json({ message: 'No token in session' });
     }
 });
 

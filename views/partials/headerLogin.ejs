@@ -6,8 +6,9 @@
     </div>
     <div class="flex items-center gap-4">
         <!-- Cart Icon -->
-        <button class="flex items-center justify-center w-10 h-10 text-primary hover:text-red transition-colors duration-200">
+        <button class="flex items-center justify-center w-10 h-10 text-primary hover:text-red transition-colors duration-200 relative" data-cart-toggle>
             <i class="ri-shopping-cart-2-fill text-xl"></i>
+            <span class="cart-count absolute -top-1 -right-1 bg-red text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" style="display: none;">0</span>
         </button>
         
                 <!-- Profile Picture -->
