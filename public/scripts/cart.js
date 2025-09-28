@@ -23,6 +23,9 @@ async function initializeCart() {
     
     // Update cart display
     updateCartDisplay();
+    
+    // Update cart button count
+    updateCartButtonCount();
 }
 
 function createCartSidebar() {
@@ -484,9 +487,9 @@ function handleCheckout() {
         return;
     }
     
-    // Implement checkout logic here
+    // Redirect to checkout page
     console.log('Proceeding to checkout...', cartItems);
-    // You can redirect to checkout page or implement checkout modal
+    window.location.href = '/checkout';
 }
 
 // Get cart item count

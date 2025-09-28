@@ -241,9 +241,18 @@ app.get('/product/:id', async (req, res) => {
         // Fallback to empty product on error
         res.render('productPage.ejs', { 
             user: req.session.user,
+            token: req.session.token,
             product: null
         });
     }
+});
+
+// Checkout page
+app.get('/checkout', (req, res) => {
+    res.render('checkout.ejs', { 
+        user: req.session.user,
+        token: req.session.token
+    });
 });
 
 // Cart API routes
