@@ -123,11 +123,19 @@
                                     <div class="color-circles" style="display: flex; gap: 18px;">
                                         <% if (product && product.available_colors && product.available_colors.length > 0) { %>
                                             <% product.available_colors.forEach(function(color, index) { %>
-                                                <div class="color-circle <%= index === 0 ? 'active' : '' %>" style="width: 38px; height: 38px; border-radius: 50%; background-color: <%= getColorCode(color) %>; <%= index === 0 ? 'border: 1px solid #E1DFE1;' : (color.toLowerCase() === 'white' ? 'border: 1px solid #D1D5DB;' : '') %> cursor: pointer;" onclick="selectColor(this, '<%= color.toLowerCase() %>', <%= index %>)"></div>
+                                                <div class="color-circle-container" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; position: relative;">
+                                                    <!-- White background circle (only for active) -->
+                                                    <div class="color-circle-background <%= index === 0 ? 'active' : '' %>" style="width: 48px; height: 48px; border-radius: 50%; background-color: white; border: 1px solid #E1DFE1; position: absolute; display: <%= index === 0 ? 'block' : 'none' %>;"></div>
+                                                    <!-- Color circle -->
+                                                    <div class="color-circle <%= index === 0 ? 'active' : '' %>" style="width: 38px; height: 38px; border-radius: 50%; background-color: <%= getColorCode(color) %>; <%= color.toLowerCase() === 'white' ? 'border: 1px solid #D1D5DB;' : '' %> cursor: pointer; position: relative; z-index: 1;" onclick="selectColor(this, '<%= color.toLowerCase() %>', <%= index %>)"></div>
+                                                </div>
                                             <% }); %>
                                         <% } else { %>
                                             <!-- Fallback colors -->
-                                            <div class="color-circle active" style="width: 38px; height: 38px; border-radius: 50%; background-color: #F8BBD9; border: 1px solid #E1DFE1; cursor: pointer;" onclick="selectColor(this, 'default', 0)"></div>
+                                            <div class="color-circle-container" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; position: relative;">
+                                                <div class="color-circle-background active" style="width: 48px; height: 48px; border-radius: 50%; background-color: white; border: 1px solid #E1DFE1; position: absolute; display: block;"></div>
+                                                <div class="color-circle active" style="width: 38px; height: 38px; border-radius: 50%; background-color: #F8BBD9; cursor: pointer; position: relative; z-index: 1;" onclick="selectColor(this, 'default', 0)"></div>
+                                            </div>
                                         <% } %>
                                     </div>
                                 </div>

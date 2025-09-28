@@ -23,8 +23,10 @@ function changeMainImage(imageSrc) {
 
 // Function to handle color selection
 function selectColor(clickedCircle, colorName, colorIndex) {
-    // Remove active class from all color circles
+    // Remove active class from all color circles and hide background circles
     const allCircles = document.querySelectorAll('.color-circle');
+    const allBackgrounds = document.querySelectorAll('.color-circle-background');
+    
     allCircles.forEach(circle => {
         circle.classList.remove('active');
         // Reset border based on color
@@ -36,9 +38,19 @@ function selectColor(clickedCircle, colorName, colorIndex) {
         }
     });
     
-    // Add active class to clicked circle
+    allBackgrounds.forEach(background => {
+        background.classList.remove('active');
+        background.style.display = 'none';
+    });
+    
+    // Add active class to clicked circle and show its background
     clickedCircle.classList.add('active');
-    clickedCircle.style.border = '1px solid #E1DFE1';
+    const container = clickedCircle.parentElement;
+    const background = container.querySelector('.color-circle-background');
+    if (background) {
+        background.classList.add('active');
+        background.style.display = 'block';
+    }
     
     // Update color label
     const colorLabel = document.querySelector('.color-label');
