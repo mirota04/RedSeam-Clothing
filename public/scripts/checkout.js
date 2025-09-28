@@ -9,10 +9,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Initialize any checkout-specific functionality here
     initializeCheckout();
+    
+    // Setup modal event listeners
+    setupModalEventListeners();
 });
 
 // Initialize checkout functionality
 function initializeCheckout() {
+    // Ensure modal is hidden on page load
+    hideSuccessModal();
+    
     // Load cart items for checkout
     loadCartForCheckout();
     
@@ -118,8 +124,171 @@ function setupPaymentProcessing() {
     console.log('Setting up payment processing...');
 }
 
-// Process checkout
-function processCheckout() {
-    // This will handle the final checkout process
-    console.log('Processing checkout...');
+// Process checkout (called when Pay button is clicked)
+async function processCheckout() {
+    console.log('Pay button clicked - processing checkout...');
+    
+    // Validate form - if validation fails, stop here
+    if (!validateCheckoutForm()) {
+        console.log('Form validation failed - stopping checkout process');
+        return;
+    }
+    
+    console.log('Form validation passed - proceeding with checkout');
+    
+    // Clear cart on server and locally
+    await clearCart();
+    
+    // Show success modal
+    showSuccessModal();
+}
+
+// Validate checkout form
+function validateCheckoutForm() {
+    const form = document.getElementById('checkout-form');
+    const inputs = form.querySelectorAll('input[required]');
+    let isValid = true;
+    let emptyFields = [];
+    
+    // Check each required input
+    inputs.forEach(input => {
+        const value = input.value.trim();
+        if (!value) {
+            input.style.borderColor = '#EF4444';
+            isValid = false;
+            emptyFields.push(input.placeholder);
+        } else {
+            input.style.borderColor = '#E1DFE1';
+        }
+    });
+    
+    // Show specific error message
+    if (!isValid) {
+        alert(`Please fill in all required fields: ${emptyFields.join(', ')}`);
+        console.log('Validation failed for fields:', emptyFields);
+    } else {
+        console.log('All form fields are valid');
+    }
+    
+    return isValid;
+}
+
+// Clear cart
+async function clearCart() {
+    try {
+        console.log('Starting cart clearing process...');
+        
+        // Get user token
+        const token = await getUserToken();
+        if (!token) {
+            console.error('No user token found for cart clearing');
+            return;
+        }
+        
+        // Send DELETE requests for each item in cart
+        if (typeof cartItems !== 'undefined' && cartItems.length > 0) {
+            console.log(`Clearing ${cartItems.length} items from cart...`);
+            
+            // Create array of delete promises
+            const deletePromises = cartItems.map(async (item) => {
+                try {
+                    const response = await fetch(`${window.location.origin}/api/cart/products/${item.id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        console.log(`Successfully deleted item ${item.id} from cart`);
+                        return true;
+                    } else {
+                        console.error(`Failed to delete item ${item.id}:`, response.status);
+                        return false;
+                    }
+                } catch (error) {
+                    console.error(`Error deleting item ${item.id}:`, error);
+                    return false;
+                }
+            });
+            
+            // Wait for all delete requests to complete
+            const results = await Promise.all(deletePromises);
+            const successCount = results.filter(result => result === true).length;
+            console.log(`Successfully deleted ${successCount}/${cartItems.length} items from server`);
+        }
+        
+        // Clear local cart
+        if (typeof cartItems !== 'undefined') {
+            cartItems.length = 0;
+            localStorage.removeItem('cartItems');
+        }
+        
+        // Update cart display if cart functions are available
+        if (typeof updateCartDisplay === 'function') {
+            updateCartDisplay();
+        }
+        if (typeof updateCartButtonCount === 'function') {
+            updateCartButtonCount();
+        }
+        
+        console.log('Cart cleared successfully');
+    } catch (error) {
+        console.error('Error clearing cart:', error);
+        // Still clear local cart even if server requests fail
+        if (typeof cartItems !== 'undefined') {
+            cartItems.length = 0;
+            localStorage.removeItem('cartItems');
+        }
+    }
+}
+
+// Show success modal
+function showSuccessModal() {
+    const modal = document.getElementById('success-modal');
+    modal.style.display = 'flex';
+}
+
+// Hide success modal
+function hideSuccessModal() {
+    const modal = document.getElementById('success-modal');
+    modal.style.display = 'none';
+}
+
+// Redirect to landing page
+function redirectToHome() {
+    window.location.href = '/';
+}
+
+// Setup modal event listeners
+function setupModalEventListeners() {
+    // Close modal button
+    const closeModalBtn = document.getElementById('close-modal');
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', function() {
+            hideSuccessModal();
+            redirectToHome();
+        });
+    }
+    
+    // Continue shopping button
+    const continueShoppingBtn = document.getElementById('continue-shopping');
+    if (continueShoppingBtn) {
+        continueShoppingBtn.addEventListener('click', function() {
+            hideSuccessModal();
+            redirectToHome();
+        });
+    }
+    
+    // Close modal when clicking outside
+    const modal = document.getElementById('success-modal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                hideSuccessModal();
+                redirectToHome();
+            }
+        });
+    }
 }
